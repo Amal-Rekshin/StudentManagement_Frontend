@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API = "http://localhost:8080/api/users";
-const AUTH_API = "http://localhost:8080/auth";
+const API = "https://studentmanagement-springboot-1.onrender.com/api/users";
+const AUTH_API = "https://studentmanagement-springboot-1.onrender.com/auth";
 
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
