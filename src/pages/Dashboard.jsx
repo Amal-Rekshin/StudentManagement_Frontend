@@ -7,8 +7,10 @@ import {
 } from "../services/services";
 import { toast } from "react-toastify";
 import Card from "../component/Card";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
+  const navigate = useNavigate();
   const [students, setStudents] = useState([]);
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -26,12 +28,20 @@ function Dashboard() {
 
   // FETCH
   const fetchData = async () => {
-    const res = await getUsers();
-    setStudents(res.data);
+    try {
+      const res = await getUsers();
+      setStudents(res.data);
+    } catch (error) {
+      console.error("Failed to fetch data", error);
+    }
   };
 
   useEffect(() => {
-    fetchData();
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    } else {
+      fetchData();
+    }
   }, []);
 
 
@@ -54,9 +64,8 @@ function Dashboard() {
   // DELETE
   const handleDelete = async (id) => {
     await deleteUser(id);
-    toast.error("User Deleted ❌");
+    toast.success("User Deleted Successfully");
     fetchData();
-    const sizeOfStudent = students.length - 1;
   };
 
   // EDIT
@@ -104,19 +113,33 @@ function Dashboard() {
             </span>
           </div>
 
-          {/* ➕ Add User Button */}
-          <button
-            onClick={() => {
-              setForm({ name: "", mail: "", course: "" });
-              setEditId(null);
-              setShowModal(true);
-            }}
-            className="flex items-center gap-2 px-5 py-2 rounded-xl 
-  bg-blue-500
-  text-white shadow-lg hover:scale-105 hover:shadow-xl transition duration-300"
-          >
-            ➕ Add User
-          </button>
+          <div className="flex gap-2">
+            {/* ➕ Add User Button */}
+            <button
+              onClick={() => {
+                setForm({ name: "", mail: "", course: "" });
+                setEditId(null);
+                setShowModal(true);
+              }}
+              className="flex items-center gap-2 px-5 py-2 rounded-xl 
+    bg-blue-500
+    text-white shadow-lg hover:scale-105 hover:shadow-xl transition duration-300"
+            >
+              ➕ Add User
+            </button>
+            {/* Logout Button */}
+            <button
+              onClick={() => {
+                localStorage.removeItem("token");
+                navigate("/login");
+              }}
+              className="flex items-center gap-2 px-5 py-2 rounded-xl 
+    bg-red-500
+    text-white shadow-lg hover:scale-105 hover:shadow-xl transition duration-300"
+            >
+              🚪 Logout
+            </button>
+          </div>
 
         </div>
 

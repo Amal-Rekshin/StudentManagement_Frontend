@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createUser } from "../services/services";
 import { useNavigate } from "react-router-dom";
 
 function AddUser() {
@@ -10,14 +11,19 @@ function AddUser() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    fetch("http://localhost:8080/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(user)
-    }).then(() => navigate("/"));
+  useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  const handleSubmit = async () => {
+    try {
+      await createUser(user);
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

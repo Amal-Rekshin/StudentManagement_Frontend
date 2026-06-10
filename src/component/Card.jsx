@@ -151,7 +151,7 @@ function Card({ students, selectedCourse}) {
                 </ResponsiveContainer>
             </div>
 
-            <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-600/20 border border-indigo-500/30 backdrop-blur-xl shadow-lg">
+            {/* <div className="p-4 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-600/20 border border-indigo-500/30 backdrop-blur-xl shadow-lg">
 
                 <div className="flex justify-between items-center mb-2">
                     <h2 className="text-gray-300">Total Students</h2>
@@ -167,7 +167,7 @@ function Card({ students, selectedCourse}) {
 
                 <p className="text-3xl font-bold text-white mb-2">{count}</p>
 
-            </div>
+            </div> */}
 
         </div>
     );

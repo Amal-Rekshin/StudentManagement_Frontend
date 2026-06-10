@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { getUserById, updateUser } from "../services/services";
 
 function EditUser() {
   const { id } = useParams();
@@ -12,19 +13,28 @@ function EditUser() {
   });
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/users/${id}`)
-      .then(res => res.json())
-      .then(data => setUser(data));
-  }, [id]);
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+      return;
+    }
+    const fetchData = async () => {
+      try {
+        const res = await getUserById(id);
+        setUser(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [id, navigate]);
 
-  const updateUser = () => {
-    fetch(`http://localhost:8080/api/users/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(user)
-    }).then(() => navigate("/"));
+  const updateUserDetails = async () => {
+    try {
+      await updateUser(id, user);
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -40,7 +50,7 @@ function EditUser() {
       <input value={user.course}
         onChange={(e) => setUser({...user, course: e.target.value})} />
 
-      <button onClick={updateUser}>Update</button>
+      <button onClick={updateUserDetails}>Update</button>
     </div>
   );
 }

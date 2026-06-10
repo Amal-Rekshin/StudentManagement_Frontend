@@ -5,6 +5,8 @@ import EditUser from "./pages/EditUser";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DotGrid from "./animation/DotGrid";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -51,6 +53,8 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/add" element={<AddUser />} />
           <Route path="/edit/:id" element={<EditUser />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>
     </>
